@@ -16,6 +16,7 @@ datasource db {
 model Product {
   id         Int    @id @default(autoincrement())
   name       String
-  price      Json
+  price      Float
+  currencies Json
   expiration DateTime
 }

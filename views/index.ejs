@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Base styling */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f1f3f6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      color: #555;
+      margin-top: 30px;
+      font-size: 1.5em;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 5px;
+    }
+
+    form, .product-list {
+      margin-top: 20px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 8px 0 4px;
+      color: #333;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1em;
+      transition: all 0.3s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group-inline {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-group-inline .form-group {
+      flex: 1;
+    }
+
+    .product-item {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      flex-direction: column;
+      background: #f9fafc;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+
+    .product-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Console styling */
+    .console {
+      background: #2c2f33;
+      color: #eee;
+      font-family: monospace;
+      margin-top: 20px;
+      padding: 15px;
+      height: 250px;
+      overflow-y: auto;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      font-size: 0.9em;
+    }
+
+    .console h2 {
+      color: #f8f9fa;
+      font-size: 1.2em;
+      border-bottom: 1px solid #444;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+    }
+
+    .product-list h2 {
+      font-size: 1.3em;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Product Management API</h1>
+
+    <!-- Upload Products CSV -->
+    <h2>Upload Products CSV</h2>
+    <form id="uploadForm" action="/file-processing/upload" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <input type="file" name="file" required />
+      </div>
+      <button type="submit">Upload File</button>
+    </form>
+
+    <!-- Find Products -->
+    <h2>Find Products</h2>
+    <form id="findForm" action="/products" method="get">
+      <div class="form-group">
+        <label for="nameQuery">Product Name</label>
+        <input type="text" id="nameQuery" name="name" placeholder="Enter product name" />
+      </div>
+
+      <div class="form-group-inline">
+        <div class="form-group">
+          <label for="minPrice">Min Price</label>
+          <input type="number" id="minPrice" name="minPrice" step="0.01" placeholder="Min USD price" />
+        </div>
+        <div class="form-group">
+          <label for="maxPrice">Max Price</label>
+          <input type="number" id="maxPrice" name="maxPrice" step="0.01" placeholder="Max USD price" />
+        </div>
+      </div>
+
+      <div class="form-group-inline">
+        <div class="form-group">
+          <label for="minExpiration">Min Expiration Date</label>
+          <input type="date" id="minExpiration" name="minExpiration" />
+        </div>
+        <div class="form-group">
+          <label for="maxExpiration">Max Expiration Date</label>
+          <input type="date" id="maxExpiration" name="maxExpiration" />
+        </div>
+      </div>
+
+      <div class="form-group-inline">
+        <div class="form-group">
+          <label for="sortField">Sort By</label>
+          <select id="sortField" name="sortField">
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+            <option value="expiration">Expiration</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sortOrder">Order</label>
+          <select id="sortOrder" name="sortOrder">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit">Search Products</button>
+    </form>
+
+    <!-- Console Log Section -->
+    <div class="console" id="console">
+      <h2>Console Output</h2>
+      <div id="consoleContent"></div>
+    </div>
+    
+    <!-- Product List Display -->
+    <h2>Products List</h2>
+    <div id="productsList" class="product-list"></div>
+
+    <script>
+      const consoleLog = (message) => {
+        const consoleDiv = document.getElementById('consoleContent');
+        const logItem = document.createElement('div');
+        logItem.textContent = message;
+        consoleDiv.appendChild(logItem);
+        document.getElementById('console').scrollTop = document.getElementById('console').scrollHeight;
+      };
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          const response = await fetch('/products');
+          const products = await response.json();
+          const list = document.getElementById('productsList');
+          list.innerHTML = '';
+
+          products.forEach(product => {
+            const item = document.createElement('div');
+            item.classList.add('product-item');
+
+            const parsedCurrencies = JSON.parse(product.currencies);
+            const currencyDetails = Object.entries(parsedCurrencies)
+              .map(([currency, value]) => `${currency.toUpperCase()}: ${value}`)
+              .join(', ');
+
+            item.innerHTML = `
+              <div><strong>${product.name}</strong></div>
+              <div>Price (USD): $${product.price}</div>
+              <div>Currencies: ${currencyDetails}</div>
+              <div>Expiration: ${new Date(product.expiration).toLocaleDateString()}</div>
+            `;
+            list.appendChild(item);
+          });
+          consoleLog('Fetched products successfully.');
+        } catch (error) {
+          consoleLog('Error fetching products: ' + error.message);
+        }
+      });
+
+      document.getElementById('uploadForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        try {
+          const response = await fetch('/file-processing/upload', { 
+            method: 'POST', 
+            body: formData 
+          });
+          const result = await response.json();
+          consoleLog('File Upload: ' + JSON.stringify(result, null, 2));
+        } catch (error) {
+          consoleLog('Error uploading file: ' + error.message);
+        }
+      };
+
+      document.getElementById('findForm').onsubmit = async (e) => {
+        e.preventDefault();
+        const query = new URLSearchParams(new FormData(e.target)).toString();
+        consoleLog(query);
+        try {
+          const response = await fetch('/products?' + query);
+          const result = await response.json();
+
+          const list = document.getElementById('productsList');
+          list.innerHTML = '';
+
+          result.forEach(product => {
+            const item = document.createElement('div');
+            item.classList.add('product-item');
+
+            const parsedCurrencies = JSON.parse(product.currencies);
+            const currencyDetails = Object.entries(parsedCurrencies)
+              .map(([currency, value]) => `${currency.toUpperCase()}: ${value}`)
+              .join(', ');
+
+            item.innerHTML = `
+              <div><strong>${product.name}</strong></div>
+              <div>Price (USD): $${product.price}</div>
+              <div>Currencies: ${currencyDetails}</div>
+              <div>Expiration: ${new Date(product.expiration).toLocaleDateString()}</div>
+            `;
+            list.appendChild(item);
+          });
+
+          consoleLog('Find Products: ' + JSON.stringify(result, null, 2));
+        } catch (error) {
+          consoleLog('Error fetching filtered products: ' + error.message);
+        }
+      };
+    </script>
+  </div>
+</body>
+</html>
