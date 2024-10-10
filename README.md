@@ -1,85 +1,75 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Flatirons Coding Test - Product Data Manager
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+**Flatirons Coding Test** is a streamlined application designed to help businesses manage product data efficiently. With **Flatirons Coding Test**, users can upload CSV files containing product details, automatically process them, convert prices across various currencies, and retrieve product information through a user-friendly interface.
 
-## Project setup
+This project was developed as a comprehensive data management solution to assist businesses in organizing, updating, and viewing product details with ease.
 
-```bash
-$ npm install
+## Features
+
+- **Upload Products CSV**: Users can upload CSV files with product details.
+- **Data Validation**: The application sanitizes and validates data for accuracy.
+- **Multi-Currency Support**: Converts product prices into multiple currencies using the latest exchange rates.
+- **View Products**: Users can view and search for products with filters like name, price, and expiration date.
+
+---
+
+## User Stories
+
+- **Upload CSV**: Users can upload a CSV file containing product information, which the system validates and processes.
+- **Search Products**: Users can search for products using filters (e.g., name, price range, expiration date).
+
+---
+
+## Components
+
+- **Dashboard**: Central hub displaying key metrics and product information.
+
+---
+
+## Backend - API Documentation
+
+## Models
+
+### Product Model
+
+```sql
+TABLE products (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  currencies JSONB,
+  expiration DATE NOT NULL,
+);
 ```
 
-## Compile and run the project
+## API Endpoints
 
-```bash
-# development
-$ npm run start
+| HTTP Method | URL               | Request Body             | Success Status | Error Status | Description                                                  |
+| ----------- | ----------------- | ------------------------ | -------------- | ------------ | ------------------------------------------------------------ |
+| `POST`      | `/file-processing/upload` | `{file: csv}` | 200 | 400 | Uploads and processes a CSV file containing product data     |
+| `POST`      | `/products`       | `{name, price, expiration}` | 201        | 400          | Creates a new product with the provided details              |
+| `GET`       | `/products`       | `?name&minPrice&maxPrice&minExpiration&maxExpiration&sortField&sortOrder` | 200 | 404 | Retrieves a list of products with optional filtering and sorting options |
 
-# watch mode
-$ npm run start:dev
+---
 
-# production mode
-$ npm run start:prod
-```
+## Development
 
-## Run tests
+### Setup
 
-```bash
-# unit tests
-$ npm run test
+1. Clone the repository.
+2. Run `npm install` to install dependencies.
+3. Create a `.env` file and set up environment variables for database connection, API keys, etc.
+4. Run `npx prisma generate` to start get the prisma environment ready.
+5. Run `npm run start:dev` to start the development server.
 
-# e2e tests
-$ npm run test:e2e
+---
 
-# test coverage
-$ npm run test:cov
-```
+## Links
 
-## Resources
+### Technologies
 
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- [Neon](https://console.neon.tech/)
+- [Prisma ORM](https://www.prisma.io/)
+- [NestJS](https://nestjs.com/)
