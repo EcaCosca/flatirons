@@ -16,11 +16,15 @@ export class FileProcessingService {
     if (!fileBuffer) {
         throw new Error('File buffer is undefined or invalid');
     }
-
+    
     const targetCurrencies = ['eur', 'cad', 'ars', 'cny', 'jpy'];
     const exchangeRates = await this.currencyService.getExchangeRates(targetCurrencies);
-
+    
     const rows = await parseCsv(fileBuffer);
+    
+    if (rows.length > 100000) {
+      throw new BadRequestException('CSV file has too many rows. Maximum allowed is 100000.');
+    }
 
     const validData: CreateProductDto[] = rows
         .map(row => this.transformRow(row, exchangeRates))

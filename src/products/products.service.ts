@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
 import { CreateProductDto } from './dto/create-product.dto';
+import { ProductFilter } from './dto/filter-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -22,7 +23,7 @@ export class ProductsService {
     return this.databaseService.product.createMany({ data: transformedData });
   }
 
-  async findAll(filters: any) {
+  async findAll(filters: ProductFilter) {
     const {
       name,
       minPrice,

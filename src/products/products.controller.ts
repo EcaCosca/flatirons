@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
+import { ProductFilter } from './dto/filter-product.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -21,10 +22,10 @@ export class ProductsController {
     @Query('sortField') sortField: 'name' | 'price' | 'expiration' = 'name',
     @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc',
   ) {
-    const filters = {
+    const filters: ProductFilter = {
       name,
-      minPrice: minPrice ? parseFloat(String(minPrice)) : undefined,
-      maxPrice: maxPrice ? parseFloat(String(maxPrice)) : undefined,
+      minPrice: minPrice ? String(minPrice) : undefined,
+      maxPrice: maxPrice ? String(maxPrice) : undefined,
       minExpiration,
       maxExpiration,
       sortField,
