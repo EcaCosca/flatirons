@@ -2,7 +2,7 @@
 
 Flatirons Project Development: CSV Upload App Overview - Watch Video
 
-<iframe src="https://www.loom.com/embed/51af0ff0a24a4847905f1aa11ce7139a?sid=2763ac4a-5943-41f1-af7d-9c33eeac1c05" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+[![Watch the video](https://cdn.loom.com/sessions/thumbnails/51af0ff0a24a4847905f1aa11ce7139a-2f4b036cfe7c4e8b-full-play.gif)](https://www.loom.com/embed/51af0ff0a24a4847905f1aa11ce7139a?sid=2763ac4a-5943-41f1-af7d-9c33eeac1c05)
 
 [Watch the video on Loom](https://www.loom.com/embed/51af0ff0a24a4847905f1aa11ce7139a?sid=2763ac4a-5943-41f1-af7d-9c33eeac1c05)
 
