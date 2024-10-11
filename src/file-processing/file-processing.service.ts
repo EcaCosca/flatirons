@@ -17,10 +17,10 @@ export class FileProcessingService {
         throw new Error('File buffer is undefined or invalid');
     }
     
-    const targetCurrencies = ['eur', 'cad', 'ars', 'cny', 'jpy'];
-    const exchangeRates = await this.currencyService.getExchangeRates(targetCurrencies);
+    const targetCurrencies: string[] = ['eur', 'cad', 'ars', 'cny', 'jpy'];
+    const exchangeRates: Record<string, number> = await this.currencyService.getExchangeRates(targetCurrencies);
     
-    const rows = await parseCsv(fileBuffer);
+    const rows: CsvRow[] = await parseCsv(fileBuffer);
     
     if (rows.length > 100000) {
       throw new BadRequestException('CSV file has too many rows. Maximum allowed is 100000.');
@@ -39,18 +39,18 @@ export class FileProcessingService {
     return transformedRows;
 }
 
-  private transformRow(row: any, exchangeRates: Record<string, number>): CreateProductDto | null {
-    const priceInUsd = row.price
+  private transformRow(row: CsvRow, exchangeRates: Record<string, number>): CreateProductDto | null {
+    const priceInUsd: number = row.price
 
-    const name = row.name?.trim();
+    const name: string = row.name?.trim();
     if (!name) return null;
     
     if (isNaN(priceInUsd)) return null;
 
-    const expiration = new Date(row.expiration);
+    const expiration: Date = new Date(row.expiration);
     if (isNaN(expiration.getTime())) return null;
 
-    const currencies = {
+    const currencies: Record<string, number> = {
       eur: parseFloat((priceInUsd * exchangeRates['eur']).toFixed(2)),
       cad: parseFloat((priceInUsd * exchangeRates['cad']).toFixed(2)),
       ars: parseFloat((priceInUsd * exchangeRates['ars']).toFixed(2)),
